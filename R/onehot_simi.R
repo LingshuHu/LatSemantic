@@ -1,4 +1,6 @@
 
+# https://www.slideshare.net/dileepajayakody/w-40109236 # random indexing slides
+
 library(wactor)
 
 df <- data.frame(id = 1:5, 
