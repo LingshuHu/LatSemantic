@@ -43,6 +43,12 @@ other_pair <- data.frame(rbind(c("mandatory", "vaccine"), c("overcount", "death"
 
 all_pair <- rbind(covid_pair, race_pair, other_pair)
 
+metaphor <- readLines("data/keywords1.txt")
+metaphor <- metaphor[1]
+metaphor <- gsub('\\n+|\\s+', '', tolower(metaphor))
+metaphor <- unlist(strsplit(metaphor, split = ","))
+meta_pair <- tidyr::crossing(X1 = "covid19", X2 = metaphor)
+
 ## calculate similarities between all pairs
 multi_simi <- function(wordpairs, dfm) {
   s <- vector("list", length = nrow(wordpairs))
@@ -64,5 +70,12 @@ all_s2 <- unlist(multi_simi(all_pair, dv2))
 all_pair_simi <- data.frame(all_pair, before = all_s1, after = all_s2)
 
 write.csv(all_pair_simi, "results/covid_misinfo_onehot.csv")
+
+meta_s1 <- unlist(multi_simi(meta_pair, dv1))
+meta_s2 <- unlist(multi_simi(meta_pair, dv2))
+meta_pair_simi <- data.frame(meta_pair, before = meta_s1, after = meta_s2)
+
+write.csv(meta_pair_simi, "results/covid_metaphor_onehot.csv")
+
 
 unlist(covid_s)
