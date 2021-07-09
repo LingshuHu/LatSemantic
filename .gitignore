@@ -2,5 +2,6 @@ data/
 results/
 data_week/
 sample_texts/
-
+data_week_text/
+embedding/
 .Rproj.user
