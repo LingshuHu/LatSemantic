@@ -25,7 +25,7 @@ ggplot(df_met_long, aes(x = weeks, y = value, group = word1, color = word1)) + g
 
 ggplot(df_met_long, aes(x = weeks, y = value, group = word1, color = word1)) + 
   geom_point() + geom_smooth(se = F)
-
+  
 
 
 
