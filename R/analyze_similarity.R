@@ -1,4 +1,44 @@
 
+###################### find frequency of metaphor and misinfo words ################
+#install.packages("jsonlite")
+## function to count words matches in a dictionary
+word_match <- function(x, dict) {
+  if (is.character(x)) {
+    ## this removes URLs
+    #x <- gsub("https?://\\S+|@\\S+", "", x)
+    x <- tokenizers::tokenize_words(
+      x, lowercase = TRUE, strip_punct = TRUE, strip_numeric = FALSE
+    )
+  }
+  word_count <- function(token) {
+    total_words_count <- length(token)
+    med_words_count <- sum(dict$value[match(token, dict$word)], na.rm = TRUE)
+    med_words_ratio <- med_words_count/total_words_count
+    data.frame(total_words_count = total_words_count,
+               med_words_count = med_words_count,
+               stringsAsFactors = FALSE)
+  }
+  #count <- lapply(x, word_count)
+  #count <- do.call("rbind", count)
+  count <- word_count(x)
+}
+
+
+kw <- jsonlite::fromJSON("data/all_keywords_pairs.json", flatten = T)
+kw <- unique(kw[,1])
+kw <- data.frame(word = kw, value = rep(1, length(kw)))
+
+
+files <- list.files("data_week_text/usa", full.names = T)
+tt <- readLines(files[1])
+stringr::str_count(tt[1], "co")
+tt1 <- stringr::str_c(tt, collapse = " ")
+
+frq <- vector("list", length = nrow(kw))
+for (i in seq_along(kw$word)) {
+  frq[[i]] <- word_match(tt1, kw[i, ])
+}
+
 ## read data
 df <- read.csv("results/simi_usa01-52_word2vec_non-neg.csv")
 weeks <- unlist(lapply(1:52, function(x) paste0("week", x)))
