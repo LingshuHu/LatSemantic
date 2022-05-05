@@ -1,4 +1,4 @@
-﻿Attack
+attack
 Battle
 battleground
 Combat
@@ -33,9 +33,6 @@ silver
 Lysol
 Chlorine
 Hydroxychloroquine
-
-
-
 
 
 
